@@ -10,6 +10,7 @@
       margin: 0;
       font-family: "Microsoft YaHei", sans-serif;
       background-color: #f9fafb;
+      overflow: hidden; /* Prevent body scrollbars */
     }
 
     /* 顶部导航栏 */
@@ -28,14 +29,13 @@
     .header-left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
     }
 
     .header-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background-color: #2563eb; /* 蓝色圆形 Logo */
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
     }
 
     .header-title {
@@ -51,17 +51,28 @@
     }
 
     .header-icon {
-      width: 20px;
-      height: 20px;
-      background-color: #9ca3af;
-      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
     }
 
-    /* iframe 容器 */
+    /* --- DEFINITIVE SOLUTION --- */
+
+    /* 1. Centered wrapper to hold the constrained container */
+    .content-wrapper {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: calc(100vh - 60px);
+    }
+    
+    /* 2. Constrained container for the iframe */
     .iframe-container {
       position: relative;
       width: 100%;
-      height: calc(100vh - 60px); /* 扣掉 header 高度 */
+      max-width: 800px; /* PRIMARY DEFENSE: Constrain width */
+      height: 100%;
+      background-color: #fff; /* Match iframe bg */
     }
 
     iframe {
@@ -70,17 +81,29 @@
       border: none;
     }
 
-    /* 覆盖右上角 dify 标识 */
-    .overlay {
+    /* 3. Aggressive overlays as a backup defense */
+    .overlay-top-right {
       position: absolute;
       top: 0;
       right: 0;
-      width: 250px;
-      height: 50px;
-      background: linear-gradient(to left, #f0f9ff 70%, rgba(240,249,255,0));
+      width: 300px;
+      height: 70px;
+      background-color: #FFFFFF; /* Solid white */
       pointer-events: none;
       z-index: 10;
     }
+    
+    .overlay-bottom-left {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 250px;
+      height: 50px;
+      background-color: #FFFFFF; /* Solid white */
+      pointer-events: none;
+      z-index: 10;
+    }
+
   </style>
 </head>
 
@@ -88,22 +111,53 @@
   <!-- 顶部 Header -->
   <div class="header">
     <div class="header-left">
-      <div class="header-logo"></div>
+      <img src="logo/logo1.png" alt="Logo 1" class="header-logo">
       <div class="header-title">神州问学超级员工</div>
     </div>
 
     <div class="header-right">
+      <img src="logo/logo2.png" alt="Logo 2" class="header-icon">
     </div>
   </div>
 
   <!-- 主内容 -->
-  <div class="iframe-container">
-    <iframe
-      src="http://localhost/chatbot/UXOZLHzoZGfiSVsI"
-      allow="microphone">
-    </iframe>
-
-    <div class="overlay"></div>
+  <div class="content-wrapper">
+    <div class="iframe-container">
+      <iframe
+        id="dify-chatbot"
+        allow="microphone">
+      </iframe>
+      <!-- Add Overlays Back In As Failsafe -->
+      <div class="overlay-top-right"></div>
+      <div class="overlay-bottom-left"></div>
+    </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get the iframe element
+      const chatbotIframe = document.getElementById('dify-chatbot');
+
+      // --- Configuration ---
+      // This is the unique part of your Dify chatbot URL
+      const chatbotId = "UXOZLHzoZGfiSVsI";
+      
+      // Define a default backend URL for local testing
+      const defaultBackendUrl = `http://localhost/chatbot/${chatbotId}`;
+
+      // --- Dynamic URL Logic ---
+      // Look for a 'backend_url' in the query parameters of the page URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const backendUrlFromQuery = urlParams.get('backend_url');
+
+      // Use the backend URL from the query if it exists, otherwise use the default
+      const finalUrl = backendUrlFromQuery ? `${backendUrlFromQuery.replace(/\/$/, '')}/${chatbotId}` : defaultBackendUrl;
+
+      // Set the iframe source
+      chatbotIframe.src = finalUrl;
+      
+      console.log(`Setting chatbot URL to: ${finalUrl}`);
+    });
+  </script>
 </body>
 </html>
