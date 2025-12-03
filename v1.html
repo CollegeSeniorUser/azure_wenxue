@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>神州问学超级员工</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei", sans-serif;
+      background-color: #f9fafb;
+    }
+
+    /* 顶部导航栏 */
+    .header {
+      width: 100%;
+      height: 60px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #2563eb; /* 蓝色圆形 Logo */
+    }
+
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-icon {
+      width: 20px;
+      height: 20px;
+      background-color: #9ca3af;
+      border-radius: 50%;
+    }
+
+    /* iframe 容器 */
+    .iframe-container {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 60px); /* 扣掉 header 高度 */
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* 覆盖右上角 dify 标识 */
+    .overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 250px;
+      height: 50px;
+      background: linear-gradient(to left, #f0f9ff 70%, rgba(240,249,255,0));
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 顶部 Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo"></div>
+      <div class="header-title">神州问学超级员工</div>
+    </div>
+
+    <div class="header-right">
+    </div>
+  </div>
+
+  <!-- 主内容 -->
+  <div class="iframe-container">
+    <iframe
+      src="http://localhost/chatbot/UXOZLHzoZGfiSVsI"
+      allow="microphone">
+    </iframe>
+
+    <div class="overlay"></div>
+  </div>
+</body>
+</html>
